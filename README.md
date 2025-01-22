@@ -1,5 +1,3 @@
-# Nova-Addon-Template
-Template for creating Nova addons
+# PaperAsylum
 
-# Create your own Nova addon
-Visit [our documentation](https://xenondevs.xyz/docs/nova/addon/) for a guide on how to create Nova addons
+Item Asylum but in Minecraft

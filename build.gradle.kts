@@ -1,5 +1,5 @@
-group = "com.example" // TODO: Change this to your group
-version = "1.0-SNAPSHOT" // TODO: Change this to your addon version
+group = "dev.melncat" 
+version = "0.0.1"
 
 plugins {
     alias(libs.plugins.kotlin)
@@ -21,9 +21,9 @@ dependencies {
 addon {
     name = project.name.replaceFirstChar(Char::uppercase)
     version = project.version.toString()
-    main = "com.example.ExampleAddon" // TODO: Change this to your main class
+    main = "dev.melncat.paperasylum.PaperAsylum"
+    bootstrapper = "dev.melncat.paperasylum.bootstrap.PaperAsylumBootstrap"
     
-    // output directory for the generated addon jar is read from the "outDir" project property (-PoutDir="...")
     val outDir = project.findProperty("outDir")
     if (outDir is String)
         destination.set(File(outDir))
