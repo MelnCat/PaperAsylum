@@ -1,0 +1,141 @@
+{
+	"item.wand.use": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/wand/use"
+			}
+		]
+	},
+	"item.death_note.use": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/death_note/use"
+			}
+		]
+	},
+	"item.bible.cast": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/bible/cast"
+			}
+		]
+	},
+	"item.bible.explosion": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/bible/explosion"
+			}
+		]
+	},
+	"item.london.hit": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/london/hit"
+			}
+		]
+	},
+	"item.london.music": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/london/music",
+				"stream": true
+			}
+		]
+	},
+	"item.chicago.music": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/chicago/music",
+				"stream": true
+			}
+		]
+	},
+	"item.chicago.hit": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/chicago/hit"
+			}
+		]
+	},
+	"item.america.music": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/america/music",
+				"stream": true
+			}
+		]
+	},
+	"item.america.hit": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/america/hit"
+			}
+		]
+	},
+	"item.ultra_instinct.equip": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/ultra_instinct/equip"
+			}
+		]
+	},
+	"item.distressed_red_ball.equip": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/distressed_red_ball/equip"
+			}
+		]
+	},
+	"item.distressed_red_ball.use": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/distressed_red_ball/use"
+			}
+		]
+	},
+	"item.distressed_red_ball.bounce": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/distressed_red_ball/bounce"
+			}
+		]
+	},
+	"death.ding": {
+		"sounds": [
+			{
+				"name": "paperasylum:death/ding"
+			}
+		]
+	},
+	"death.fx": {
+		"sounds": [
+			{
+				"name": "paperasylum:death/fx/001"
+			},
+			{
+				"name": "paperasylum:death/fx/004"
+			},
+			{
+				"name": "paperasylum:death/fx/005"
+			},
+			{
+				"name": "paperasylum:death/fx/007"
+			},
+			{
+				"name": "paperasylum:death/fx/009"
+			},
+			{
+				"name": "paperasylum:death/fx/015"
+			},
+			{
+				"name": "paperasylum:death/fx/023"
+			},
+			{
+				"name": "paperasylum:death/fx/024"
+			},
+			{
+				"name": "paperasylum:death/fx/062"
+			}
+		]
+	}
+}

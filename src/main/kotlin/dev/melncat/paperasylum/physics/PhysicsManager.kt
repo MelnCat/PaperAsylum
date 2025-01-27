@@ -15,6 +15,11 @@ object PhysicsManager {
 		physicals.add(physical)
 	}
 	
+	fun removePhysical(physical: PointPhysical) {
+		physical.remove()
+		physicals.remove(physical)
+	}
+	
 	private fun tickPhysics() {
 		for (physical in physicals) {
 			physical.tick()

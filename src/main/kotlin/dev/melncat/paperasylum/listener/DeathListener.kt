@@ -12,6 +12,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
@@ -19,23 +20,27 @@ import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.registerEvents
 
 @Init(stage = InitStage.POST_WORLD)
-object AttackListener : Listener {
+object DeathListener : Listener {
+	private val deathSound = Sound.sound()
+		.type(PaperAsylum.key("death.fx"))
+		.build()
+	
+	private val dingSound = Sound.sound()
+		.type(PaperAsylum.key("death.ding"))
+		.build()
+	
 	@InitFun
 	private fun init() {
 		registerEvents()
 	}
-	
 	@EventHandler
-	fun on(event: EntityDamageByEntityEvent) {
-		val damager = event.damager as? LivingEntity ?: return
-		val entity = event.entity as? LivingEntity ?: return
-		entity.maximumNoDamageTicks = 0
+	fun on(event: PlayerDeathEvent) {
+		// if (event.player.killer == null) return
+		event.player.playSound(deathSound, Sound.Emitter.self())
 	}
-	
 	@EventHandler
-	fun on(event: EntityKnockbackByEntityEvent) {
-		val hitter = event.hitBy as? LivingEntity ?: return
-		event.isCancelled = true
+	fun on(event: EntityDeathEvent) {
+		val killer = event.entity.killer ?: return
+		killer.playSound(dingSound, Sound.Emitter.self())
 	}
-	
 }

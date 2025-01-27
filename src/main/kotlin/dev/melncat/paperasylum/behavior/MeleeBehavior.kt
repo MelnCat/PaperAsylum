@@ -38,7 +38,7 @@ class MeleeBehavior(
 						Attributes.ENTITY_INTERACTION_RANGE,
 						AttributeModifier(
 							reachId,
-							reach,
+							reach - 3.0,
 							Operation.ADD_VALUE
 						),
 						EquipmentSlotGroup.MAINHAND
