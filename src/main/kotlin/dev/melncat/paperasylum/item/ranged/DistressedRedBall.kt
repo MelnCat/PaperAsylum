@@ -2,9 +2,11 @@ package dev.melncat.paperasylum.item.ranged
 
 import dev.melncat.paperasylum.PaperAsylum
 import dev.melncat.paperasylum.behavior.ItemCooldown
+import dev.melncat.paperasylum.behavior.PABehavior
 import dev.melncat.paperasylum.physics.PhysicsManager
 import dev.melncat.paperasylum.physics.PointPhysical
 import dev.melncat.paperasylum.registry.PADamageType
+import dev.melncat.paperasylum.registry.PAItem
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.sound.Sound
@@ -27,7 +29,7 @@ import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import java.util.*
 
-class DistressedRedBall : ItemBehavior {
+class DistressedRedBall : PABehavior() {
 	private val useSound = Sound.sound()
 		.type(PaperAsylum.key("item.distressed_red_ball.use"))
 		.volume(0.7f)
@@ -37,8 +39,7 @@ class DistressedRedBall : ItemBehavior {
 		.volume(0.3f)
 		.build()
 	
-	override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
-		if (!action.isRightClick) return
+	override fun handleRightClick(player: Player, itemStack: ItemStack) {
 		player.playSound(useSound, Sound.Emitter.self())
 		PhysicsManager.addPhysical(PointPhysical(
 			ItemStack(Material.RED_CONCRETE), player.eyeLocation, player.eyeLocation.direction, 20 * 10, { entity, hit ->

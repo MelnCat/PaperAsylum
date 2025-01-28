@@ -12,13 +12,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation
 import net.minecraft.world.entity.ai.attributes.Attributes
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.component.ItemAttributeModifiers
+import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Particle
 import org.bukkit.Particle.DustOptions
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitScheduler
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
@@ -33,14 +37,23 @@ class HeldMusic(
 		.type(PaperAsylum.key(musicKey))
 		.build()
 	
-	override fun handleInventoryTick(player: Player, itemStack: ItemStack, slot: Int) {
-		if (player.inventory.itemInMainHand != itemStack && musicPlaying) {
-			musicPlaying = false
-			player.stopSound(music)
-		}
-		else if (!musicPlaying && player.inventory.itemInMainHand == itemStack) {
+	private fun checkInventory(player: Player, itemStack: ItemStack) {
+		if (!musicPlaying && player.inventory.itemInMainHand == itemStack) {
 			musicPlaying = true
 			player.playSound(music, Sound.Emitter.self())
+			(object : BukkitRunnable() {
+				override fun run() {
+					if (player.inventory.itemInMainHand != itemStack && musicPlaying) {
+						musicPlaying = false
+						player.stopSound(music)
+						cancel()
+					}
+				}
+			}).runTaskTimer(PaperAsylum.plugin!!, 0L, 1L)
 		}
+	}
+	
+	override fun handleInventoryTick(player: Player, itemStack: ItemStack, slot: Int) {
+		checkInventory(player, itemStack)
 	}
 }

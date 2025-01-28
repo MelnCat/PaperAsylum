@@ -1,19 +1,15 @@
-package dev.melncat.paperasylum.item.ranged
+package dev.melncat.paperasylum.item.melee
 
 import com.destroystokyo.paper.ParticleBuilder
 import dev.melncat.paperasylum.PaperAsylum
-import dev.melncat.paperasylum.behavior.ItemCooldown
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Color
 import org.bukkit.Particle
 import org.bukkit.Particle.DustOptions
 import org.bukkit.entity.Entity
-import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
-import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 
 class London : ItemBehavior {

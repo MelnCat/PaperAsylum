@@ -2,6 +2,7 @@ package dev.melncat.paperasylum.item.ranged
 
 import dev.melncat.paperasylum.PaperAsylum
 import dev.melncat.paperasylum.behavior.ItemCooldown
+import dev.melncat.paperasylum.behavior.PABehavior
 import net.kyori.adventure.sound.Sound
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponents
@@ -19,7 +20,7 @@ import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import java.util.*
 
-class Bible : ItemBehavior {
+class Bible : PABehavior() {
 	private val castSound = Sound.sound()
 		.type(PaperAsylum.key("item.bible.cast"))
 		.volume(0.9f)
@@ -29,15 +30,13 @@ class Bible : ItemBehavior {
 		.volume(0.9f)
 		.build()
 	
-	override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
-		if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) return
-		if (itemStack.novaItem!!.getBehavior(ItemCooldown::class).hasCooldown()) return
+	override fun handleRightClick(player: Player, itemStack: ItemStack) {
+		if (consumeCooldown(player, itemStack)) return
 		val hit = player.rayTraceEntities(100)?.hitEntity?.location
 			?: player.rayTraceBlocks(100.0)?.hitBlock?.location
 			?: return
-		itemStack.novaItem!!.getBehavior(ItemCooldown::class).resetCooldown(player, itemStack)
 		player.playSound(castSound, Sound.Emitter.self())
-		runTaskLater(20L) {
+		runTaskLater(15L) {
 			hit.world.strikeLightningEffect(hit)
 			hit.world.spawnParticle(Particle.EXPLOSION, hit, 5, 1.0, 1.0, 1.0)
 			hit.world.spawnParticle(Particle.LARGE_SMOKE, hit, 25, 1.0, 1.0, 1.0)

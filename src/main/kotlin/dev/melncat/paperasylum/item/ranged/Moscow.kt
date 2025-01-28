@@ -22,12 +22,20 @@ import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 
-class Chicago : PABehavior() {
+class Moscow : PABehavior() {
 	private val hitSound = Sound.sound()
 		.type(PaperAsylum.key("item.chicago.hit"))
 		.volume(0.7f)
 		.build()
 	
+	private var used = false
+	
+	override fun handleInventoryTick(player: Player, itemStack: ItemStack, slot: Int) {
+		if (!used && player.inventory.itemInMainHand == itemStack) {
+			used = true
+			// todo add extra health
+		}
+	}
 	
 	override fun handleRightClick(player: Player, itemStack: ItemStack) {
 		if (consumeCooldown(player, itemStack)) return
@@ -41,7 +49,8 @@ class Chicago : PABehavior() {
 			0.0) {
 			it !is Player || it.uniqueId != player.uniqueId
 		}
-		hit?.hitEntity?.let { if (it is LivingEntity) it.damage(0.8, player) }
+		player.velocity = player.velocity.add(player.location.direction.setY(0).normalize().multiply(-0.13))
+		hit?.hitEntity?.let { if (it is LivingEntity) it.damage(1.5, player) }
 		for (i in 0..500) {
 			val distance = i.toDouble() / 5.0
 			val pos = player.eyeLocation.add(player.location.direction.multiply(distance))

@@ -50,6 +50,22 @@
 			}
 		]
 	},
+	"item.moscow.music": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/moscow/music",
+				"stream": true
+			}
+		]
+	},
+	"item.train.music": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/train/music",
+				"stream": true
+			}
+		]
+	},
 	"item.chicago.hit": {
 		"sounds": [
 			{
@@ -76,6 +92,13 @@
 		"sounds": [
 			{
 				"name": "paperasylum:item/ultra_instinct/equip"
+			}
+		]
+	},
+	"item.warp.use": {
+		"sounds": [
+			{
+				"name": "paperasylum:item/warp/use"
 			}
 		]
 	},

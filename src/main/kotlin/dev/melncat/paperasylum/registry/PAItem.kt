@@ -10,18 +10,14 @@ import dev.melncat.paperasylum.item.misc.UltraInstinct
 import dev.melncat.paperasylum.item.ranged.America
 import dev.melncat.paperasylum.item.ranged.Bible
 import dev.melncat.paperasylum.item.ranged.Chicago
-import dev.melncat.paperasylum.item.ranged.DeathNote
+import dev.melncat.paperasylum.item.misc.DeathNote
 import dev.melncat.paperasylum.item.ranged.DistressedRedBall
-import dev.melncat.paperasylum.item.ranged.London
-import dev.melncat.paperasylum.item.ranged.Wand
-import dev.melncat.paperasylum.physics.PhysicsManager
-import dev.melncat.paperasylum.physics.PointPhysical
-import io.papermc.paper.registry.RegistryAccess
-import io.papermc.paper.registry.RegistryKey
-import net.minecraft.world.item.ItemUseAnimation
-import org.bukkit.Material
-import org.bukkit.damage.DamageSource
-import org.bukkit.entity.LivingEntity
+import dev.melncat.paperasylum.item.melee.London
+import dev.melncat.paperasylum.item.melee.Wand
+import dev.melncat.paperasylum.item.misc.Train
+import dev.melncat.paperasylum.item.misc.Warp
+import dev.melncat.paperasylum.item.ranged.Moscow
+import dev.melncat.paperasylum.util.RagdollManager
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.inventory.EquipmentSlot
@@ -30,10 +26,8 @@ import xyz.xenondevs.nova.addon.registry.ItemRegistry
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitStage
 import xyz.xenondevs.nova.world.item.behavior.Consumable
-import xyz.xenondevs.nova.world.item.behavior.Cooldown
 import xyz.xenondevs.nova.world.item.behavior.Equippable
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.item.behavior.Tool
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 
 @Init(stage = InitStage.PRE_PACK)
@@ -49,6 +43,13 @@ object PAItem : ItemRegistry by PaperAsylum.registry {
 		behaviors(
 			Chicago(),
 			HeldMusic("item.chicago.music"),
+			ItemCooldown(0.125f)
+		)
+	}
+	val MOSCOW = item("moscow") {
+		behaviors(
+			Moscow(),
+			HeldMusic("item.moscow.music"),
 			ItemCooldown(0.125f)
 		)
 	}
@@ -101,10 +102,30 @@ object PAItem : ItemRegistry by PaperAsylum.registry {
 			DeathNote()
 		)
 	}
+	val TRAIN = item("train") {
+		behaviors(
+			Train(),
+			ItemCooldown(6f)
+		)
+	}
+	val WARP = item("warp") {
+		behaviors(
+			Warp()
+		)
+	}
 	val DISTRESSED_RED_BALL = item("distressed_red_ball") {
 		behaviors(
 			DistressedRedBall(),
 			HeldMusic("item.distressed_red_ball.equip")
+		)
+	}
+	val TEST = item("test") {
+		behaviors(
+			object : ItemBehavior {
+				override fun handleInteract(player: Player, itemStack: ItemStack, action: Action, wrappedEvent: WrappedPlayerInteractEvent) {
+					if (action.isRightClick) RagdollManager.startRagdoll(player.uniqueId, 10L * 20L)
+				}
+			}
 		)
 	}
 	
