@@ -32,6 +32,7 @@ import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 
 @Init(stage = InitStage.PRE_PACK)
 object PAItem : ItemRegistry by PaperAsylum.registry {
+	
 	val LONDON = item("london") {
 		behaviors(
 			MeleeBehavior(2.4, 0.7, 0.001),
@@ -128,5 +129,10 @@ object PAItem : ItemRegistry by PaperAsylum.registry {
 			}
 		)
 	}
+	
+	
+	val melee = listOf(LONDON, AIR, WAND)
+	val ranged = listOf(CHICAGO, MOSCOW, AMERICA, BIBLE, DISTRESSED_RED_BALL)
+	val misc = listOf(APPLE, ULTRA_INSTINCT, DEATH_NOTE, TRAIN, WARP)
 	
 }

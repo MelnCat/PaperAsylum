@@ -13,6 +13,8 @@ import net.minecraft.world.item.component.ItemAttributeModifiers
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import xyz.xenondevs.commons.provider.provider
+import xyz.xenondevs.nova.util.item.retrieveData
+import xyz.xenondevs.nova.util.item.storeData
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.equipment.ArmorEquipEvent
 
@@ -20,7 +22,7 @@ class UltraInstinct : ItemBehavior {
 	private val equipSound = Sound.sound()
 		.type(PaperAsylum.key("item.ultra_instinct.equip"))
 		.build()
-	private var used = false
+	private var usedKey = PaperAsylum.key("used")
 	
 	override val baseDataComponents = provider(
 		DataComponentMap.builder()
@@ -42,8 +44,8 @@ class UltraInstinct : ItemBehavior {
 	)
 	override fun handleEquip(player: Player, itemStack: ItemStack, equipped: Boolean, event: ArmorEquipEvent) {
 		player.playSound(equipSound, Sound.Emitter.self())
-		if (!used) {
-			used = true
+		if (itemStack.retrieveData<Boolean>(usedKey) != true) {
+			itemStack.storeData<Boolean>(usedKey, true)
 			player.heal(10.0)
 		}
 	}

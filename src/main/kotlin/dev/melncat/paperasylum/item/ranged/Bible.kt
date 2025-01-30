@@ -3,6 +3,7 @@ package dev.melncat.paperasylum.item.ranged
 import dev.melncat.paperasylum.PaperAsylum
 import dev.melncat.paperasylum.behavior.ItemCooldown
 import dev.melncat.paperasylum.behavior.PABehavior
+import dev.melncat.paperasylum.util.RagdollManager
 import net.kyori.adventure.sound.Sound
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponents
@@ -19,6 +20,7 @@ import xyz.xenondevs.nova.world.item.behavior.Cooldown
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import xyz.xenondevs.nova.world.player.WrappedPlayerInteractEvent
 import java.util.*
+import kotlin.math.min
 
 class Bible : PABehavior() {
 	private val castSound = Sound.sound()
@@ -42,6 +44,13 @@ class Bible : PABehavior() {
 			hit.world.spawnParticle(Particle.LARGE_SMOKE, hit, 25, 1.0, 1.0, 1.0)
 			hit.world.spawnParticle(Particle.FLAME, hit, 4, 1.0, 1.0, 1.0)
 			hit.world.playSound(explosionSound, hit.x, hit.y, hit.z)
+			val nearby = hit.getNearbyLivingEntities(3.0)
+			for (entity in nearby) {
+				val knock = entity.location.subtract(hit)
+				entity.velocity = entity.velocity.add(knock.toVector().normalize().multiply(min(4.0, 1 / (entity.location.distance(hit)))))
+				if (entity is Player) RagdollManager.startRagdoll(entity.uniqueId, 60)
+				entity.damage(9.0, player)
+			}
 		}
 		
 	}

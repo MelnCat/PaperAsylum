@@ -4,8 +4,10 @@ import dev.geco.gsit.GSitMain
 import dev.geco.gsit.api.event.PrePlayerGetUpCrawlEvent
 import dev.geco.gsit.objects.GetUpReason
 import org.bukkit.Bukkit
+import org.bukkit.entity.Pose
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityToggleSwimEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.util.Vector
 import xyz.xenondevs.nova.initialize.Init
@@ -23,11 +25,13 @@ object RagdollManager : Listener {
 		ragdolled[uuid] = time
 		val player = Bukkit.getPlayer(uuid) ?: return
 		GSitMain.getInstance().crawlManager.startCrawl(player)
+		player.setPose(Pose.SWIMMING, true)
 	}
 	
 	fun stopRagdoll(uuid: UUID) {
 		ragdolled.remove(uuid)
 		val player = Bukkit.getPlayer(uuid) ?: return
+		// player.setPose(Pose.STANDING)
 		GSitMain.getInstance().crawlManager.stopCrawl(player, GetUpReason.PLUGIN)
 	}
 	

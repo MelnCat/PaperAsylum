@@ -26,11 +26,12 @@ import org.bukkit.scheduler.BukkitScheduler
 import xyz.xenondevs.commons.provider.provider
 import xyz.xenondevs.nova.util.ResourceLocation
 import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
+import java.util.UUID
 
 class HeldMusic(
 	musicKey: String
 ) : ItemBehavior {
-	private var musicPlaying = false
+	private var musicPlaying = mutableMapOf<UUID, Boolean>()
 	
 	private val music = Sound.sound()
 		.volume(0.8f)
@@ -38,13 +39,13 @@ class HeldMusic(
 		.build()
 	
 	private fun checkInventory(player: Player, itemStack: ItemStack) {
-		if (!musicPlaying && player.inventory.itemInMainHand == itemStack) {
-			musicPlaying = true
+		if (musicPlaying[player.uniqueId] != true && player.inventory.itemInMainHand == itemStack) {
+			musicPlaying[player.uniqueId] = true
 			player.playSound(music, Sound.Emitter.self())
 			(object : BukkitRunnable() {
 				override fun run() {
-					if (player.inventory.itemInMainHand != itemStack && musicPlaying) {
-						musicPlaying = false
+					if (player.inventory.itemInMainHand != itemStack && musicPlaying[player.uniqueId] == true) {
+						musicPlaying[player.uniqueId] = false
 						player.stopSound(music)
 						cancel()
 					}

@@ -42,7 +42,7 @@ class DistressedRedBall : PABehavior() {
 	override fun handleRightClick(player: Player, itemStack: ItemStack) {
 		player.playSound(useSound, Sound.Emitter.self())
 		PhysicsManager.addPhysical(PointPhysical(
-			ItemStack(Material.RED_CONCRETE), player.eyeLocation, player.eyeLocation.direction, 20 * 10, { entity, hit ->
+			ItemStack(Material.RED_CONCRETE), player.eyeLocation, player.eyeLocation.direction, 20 * 2 /*10*/, { entity, hit ->
 			if (hit is LivingEntity) {
 				hit.damage(
 					1.0, DamageSource.builder(

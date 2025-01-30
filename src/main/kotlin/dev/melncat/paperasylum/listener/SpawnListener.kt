@@ -1,18 +1,21 @@
 package dev.melncat.paperasylum.listener
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import dev.melncat.paperasylum.PaperAsylum
+import dev.melncat.paperasylum.registry.PAItem
 import net.kyori.adventure.sound.Sound
 import net.minecraft.world.entity.ai.attributes.Attributes
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.entity.Zombie
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
-import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import xyz.xenondevs.nova.initialize.Init
 import xyz.xenondevs.nova.initialize.InitFun
 import xyz.xenondevs.nova.initialize.InitStage
@@ -20,28 +23,27 @@ import xyz.xenondevs.nova.util.item.novaItem
 import xyz.xenondevs.nova.util.registerEvents
 
 @Init(stage = InitStage.POST_WORLD)
-object DeathListener : Listener {
-	private val deathSound = Sound.sound()
-		.type(PaperAsylum.key("death.fx"))
-		.build()
-	
-	private val dingSound = Sound.sound()
-		.type(PaperAsylum.key("death.ding"))
-		.build()
-	
+object SpawnListener : Listener {
 	@InitFun
 	private fun init() {
 		registerEvents()
 	}
+	
 	@EventHandler
-	fun on(event: PlayerDeathEvent) {
-		// if (event.player.killer == null) return
-		event.player.playSound(deathSound, Sound.Emitter.self())
-		event.drops.removeIf { it.novaItem != null }
+	fun on(event: PlayerPostRespawnEvent) {
+		initializeItems(event.player)
 	}
+	
 	@EventHandler
-	fun on(event: EntityDeathEvent) {
-		val killer = event.entity.killer ?: return
-		killer.playSound(dingSound, Sound.Emitter.self())
+	fun on(event: PlayerJoinEvent) {
+		if (!event.player.hasPlayedBefore()) initializeItems(event.player)
 	}
+	
+	private fun initializeItems(player: Player) {
+		val melee = PAItem.melee.random().createItemStack()
+		val ranged = PAItem.ranged.random().createItemStack()
+		val misc = PAItem.misc.random().createItemStack()
+		player.inventory.addItem(melee, ranged, misc)
+	}
+	
 }

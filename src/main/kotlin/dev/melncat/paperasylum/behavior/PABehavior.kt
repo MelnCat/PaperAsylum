@@ -23,7 +23,7 @@ open class PABehavior : ItemBehavior {
 	protected open fun handleRightClick(player: Player, itemStack: ItemStack) {}
 	
 	protected fun hasCooldown(itemStack: ItemStack) 
-	= itemStack.novaItem!!.getBehavior(ItemCooldown::class).hasCooldown()
+	= itemStack.novaItem!!.getBehavior(ItemCooldown::class).hasCooldown(itemStack)
 	
 	protected fun resetCooldown(player: Player, itemStack: ItemStack) {
 		itemStack.novaItem!!.getBehavior(ItemCooldown::class).resetCooldown(player, itemStack)

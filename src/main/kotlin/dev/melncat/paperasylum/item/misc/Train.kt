@@ -3,27 +3,15 @@ package dev.melncat.paperasylum.item.misc
 import dev.melncat.paperasylum.PaperAsylum
 import dev.melncat.paperasylum.behavior.PABehavior
 import dev.melncat.paperasylum.util.RagdollManager
-import io.papermc.paper.entity.LookAnchor
 import net.kyori.adventure.sound.Sound
-import net.minecraft.core.component.DataComponentMap
-import net.minecraft.core.component.DataComponents
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.entity.EquipmentSlotGroup
-import net.minecraft.world.entity.ai.attributes.AttributeModifier
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation
-import net.minecraft.world.entity.ai.attributes.Attributes
-import net.minecraft.world.item.component.ItemAttributeModifiers
 import org.bukkit.FluidCollisionMode
-import org.bukkit.Location
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
-import xyz.xenondevs.commons.provider.provider
-import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
-import xyz.xenondevs.nova.world.player.equipment.ArmorEquipEvent
+import java.util.UUID
 
 class Train : PABehavior() {
 	private val music = Sound.sound()
@@ -36,12 +24,13 @@ class Train : PABehavior() {
 		RUN
 	}
 	
-	private var state = UseState.NOT_USING
+	private var states = mutableMapOf<UUID, UseState>()
 	private var runTime = 0
 	
 	override fun handleRightClick(player: Player, itemStack: ItemStack) {
+		val state = states[player.uniqueId] ?: UseState.NOT_USING
 		if (hasCooldown(itemStack) || state != UseState.NOT_USING) return
-		state = UseState.ACCELERATE
+		states[player.uniqueId] = UseState.ACCELERATE
 		player.world.playSound(music, player)
 		(object : BukkitRunnable() {
 			override fun run() {
@@ -49,7 +38,7 @@ class Train : PABehavior() {
 					runTime++
 					if (runTime > 20) {
 						runTime = 0
-						state = UseState.RUN
+						states[player.uniqueId] = UseState.RUN
 					}
 					player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 200, (runTime / 5.5).toInt(), false, false, false))
 				}
@@ -62,7 +51,7 @@ class Train : PABehavior() {
 						cancel()
 						player.world.stopSound(music)
 						player.damage(1000.0) // TODO HEART ATTACK
-						state = UseState.NOT_USING
+						states[player.uniqueId] = UseState.NOT_USING
 						runTime = 0
 						player.removePotionEffect(PotionEffectType.SPEED)
 					}
@@ -89,7 +78,7 @@ class Train : PABehavior() {
 					player.world.stopSound(music)
 					cancel()
 					resetCooldown(player, itemStack)
-					state = UseState.NOT_USING
+					states[player.uniqueId] = UseState.NOT_USING
 					runTime = 0
 					player.removePotionEffect(PotionEffectType.SPEED)
 				}
