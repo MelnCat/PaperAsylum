@@ -13,7 +13,7 @@ import xyz.xenondevs.nova.world.item.behavior.ItemBehavior
 import java.util.*
 
 class ItemCooldown(private val cooldown: Float) : ItemBehavior {
-	private val nextTimeKey = PaperAsylum.key("nextTime")
+	private val nextTimeKey = PaperAsylum.key("next_time")
 	override val baseDataComponents = provider(
 		DataComponentMap.builder()
 			.set(
